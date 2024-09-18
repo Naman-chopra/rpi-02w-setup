@@ -1,0 +1,2 @@
+@reboot sleep 10; /usr/bin/python /home/pi/Desktop/backups/ip_updation/mail_upd.py >> /home/pi/Desktop/backups/logs/mycronlog.txt 2>&1
+*/5 * * * * /usr/bin/python /home/pi/Desktop/backups/logs/ip_updation/mail_upd.py >> /home/pi/Desktop/backups/logs/mycronlog_e5.txt 2>&1
