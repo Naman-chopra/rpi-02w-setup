@@ -24,4 +24,4 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-@reboot sleep 10; /usr/bin/python /home/rpi/startup/mail_upd.py >> /home/rpi/logs/mail_upd_log.txt 2>&1
+@reboot sleep 10; /usr/bin/python /home/rpi/startup/mail_upd.py >> /home/rpi/logs/mail_upd.txt 2>&1
