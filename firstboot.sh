@@ -4,7 +4,7 @@
 sudo raspi-config
 
 # creating a default environment for all python installations
-python3 -m venv --system-site-packages env
+python3 -m venv --system-site-packages ~/env
 
 # making a directory for startup programs
 mkdir ~/startup
