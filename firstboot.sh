@@ -17,6 +17,10 @@ cp .bashrc ~/.bashrc
 
 # setting cronjobs to use the mail updation script to run at startup
 # add commands to run other files to the root file at startup or periodically
-cp root ~/var/spool/cron/crontabs/root
+echo "__________________Crontab content, you have 10 seconds to copy the content below this line ______________________"
+cat root
+sleep 10
+echo "__________________paste this into the window that appears next______________________"
+sleep 5
 
 sudo reboot now
