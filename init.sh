@@ -1,4 +1,6 @@
 #!/bin/bash
+sudo apt install zsh
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 sudo apt update && sudo apt upgrade
 # configure the vnc server, vnc resolution, update the pi and other hardware interfaces
 sudo raspi-config
@@ -26,6 +28,9 @@ sleep 5
 
 sudo apt install tailscale
 
-sudo tailscale up -ssh --authkey tskey-auth-ktkAfgfwvT11CNTRL-GKLizvgfm7RjeLBZQdNm7RvMjV8hmQYK
+
+read -p "Enter your Tailscale auth key: " AUTH_KEY
+sudo tailscale up -ssh --authkey "$AUTH_KEY"
+
 
 sudo reboot now
