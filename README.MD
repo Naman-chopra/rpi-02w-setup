@@ -1,5 +1,5 @@
 
-# Spotipi E-Ink Project Starter
+# Raspi Zero 2W initiator
 
 This project is designed to work with a Raspberry Pi Zero 2W to get it started with initial settings
 
