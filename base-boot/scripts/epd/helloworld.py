@@ -3,10 +3,10 @@ from io import BytesIO
 import requests
 from datetime import datetime
 from TP_lib import epd2in13_V4 as epv4
+from epdUtils import *
 
 epd = epv4.EPD()
-epd.init(epd.FULL_UPDATE)
-epd.Clear(0xFF)
+clear()
 
 image = Image.new('1', (epd.height, epd.width), 255)  # 1-bit color (black and white)
 draw = ImageDraw.Draw(image)
