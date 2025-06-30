@@ -1,3 +1,4 @@
+source ~/env/bin/activate
 #installing all the libraries and drivers needed for the waveshare touch display
 wget https://github.com/joan2937/lg/archive/master.zip
 unzip master.zip
