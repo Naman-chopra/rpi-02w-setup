@@ -24,7 +24,7 @@ def get_ip():
             ip_address = parts[1]
             print(ip_address)
         copy_str = str(ip_address) + "\n"
-    return copy_str
+    return copy_str + "And ssh password is rpi for rpi123"
 
 
 # Email settings

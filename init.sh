@@ -1,16 +1,17 @@
 #!/bin/bash
-
+sudo apt update && sudo apt upgrade
 # configure the vnc server, vnc resolution, update the pi and other hardware interfaces
 sudo raspi-config
 
+sudo apt install python3
 # creating a default environment for all python installations
 python3 -m venv --system-site-packages ~/env
 
 # making a directory for startup programs
-mkdir ~/startup
+mkdir ~/base-boot
 
 # adding ip updation email to 
-cp mail_upd.py ~/startup/
+cp -r base-boot ~/base-boot/
 
 #copy bashrc file to ensure the environment is activated on every login and some other customizations
 cp .bashrc ~/.bashrc
@@ -22,5 +23,9 @@ cat root
 sleep 10
 echo "__________________paste this into the window that appears next______________________"
 sleep 5
+
+sudo apt install tailscale
+
+sudo tailscale up -ssh --authkey tskey-auth-ktkAfgfwvT11CNTRL-GKLizvgfm7RjeLBZQdNm7RvMjV8hmQYK
 
 sudo reboot now
