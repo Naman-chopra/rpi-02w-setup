@@ -5,6 +5,8 @@ from datetime import datetime
 from TP_lib import epd2in13_V4 as epv4
 
 epd = epv4.EPD()
+epd.init(epd.FULL_UPDATE)
+epd.Clear(0xFF)
 
 image = Image.new('1', (epd.height, epd.width), 255)  # 1-bit color (black and white)
 draw = ImageDraw.Draw(image)
