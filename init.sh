@@ -24,6 +24,7 @@ echo "__________________Crontab content, you have 10 seconds to copy the content
 cat root
 sleep 10
 echo "__________________paste this into the window that appears next______________________"
+sudo crontab -e
 sleep 5
 
 sudo apt install tailscale
