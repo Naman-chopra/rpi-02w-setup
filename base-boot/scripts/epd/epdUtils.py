@@ -14,6 +14,7 @@ def helloworld():
     draw.text((10, 10), "Display worksss!!", font=font, fill=0)
     draw.text((10, 30), "☜(⌒▽⌒)☞", font=font, fill=0)
     epd.display(epd.getbuffer(image))
+    return
 
 
 def timeDiff(then, now):
