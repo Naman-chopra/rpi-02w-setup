@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+#set -e
 
 # Determine real user and home
 REAL_USER="${SUDO_USER:-$USER}"
@@ -20,7 +20,7 @@ sudo apt -y install gpiod libgpiod-dev python3-pip
 # Clone Waveshare Touch display repo and install
 cd "$REAL_HOME"
 git clone "https://github.com/waveshare/Touch_e-Paper_HAT"
-python3 Touch_e-Paper_HAT/python/setup.py install
+pip install Touch_e-Paper_HAT/python/
 
 sudo apt -y autoremove
 

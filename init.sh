@@ -23,7 +23,7 @@ python3 -m venv --system-site-packages "$REAL_HOME/env"
 
 # Setup directories
 mkdir -p "$REAL_HOME/base-boot"
-cp -r "$REAL_HOME/rpi-02w-setup/base-boot" "$REAL_HOME/base-boot/"
+cp -r "$REAL_HOME/rpi-02w-setup/base-boot/" "$REAL_HOME/base-boot/"
 
 # Cron job
 echo "__________________Crontab content, copy below ______________________"

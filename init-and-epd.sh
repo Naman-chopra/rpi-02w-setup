@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Running initial setup..."
-echo "Make sure to enable SPI from raspi-config"
+echo "Make sure to enable SPI and I2C from raspi-config"
 
 chmod +x init.sh
 sudo ./init.sh
