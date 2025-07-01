@@ -10,11 +10,12 @@ sudo apt -y install gpiod libgpiod-dev python3-pip
 
 cd
 git clone https://github.com/waveshare/Touch_e-Paper_HAT
-cd Touch_e-Paper_HAT/python/
-python3 setup.py install
+python3 Touch_e-Paper_HAT/python/setup.py install
 
 sudo apt -y autoremove
 
 cd ~/rpi-02w-setup
 
 pip install -r requirements.txt
+
+python3 base-boot/scripts/epd/helloworld.py
