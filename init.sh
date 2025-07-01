@@ -1,63 +1,63 @@
 #!/bin/bash
 set -e  # Exit immediately if a command fails
 
-# Determine the real user and home dir whether run with sudo or not
-REAL_USER="${SUDO_USER:-$USER}"
-REAL_HOME=$(eval echo "~$REAL_USER")
-
 sudo apt update && sudo apt -y upgrade
-
+# configure the vnc server, vnc resolution, update the pi and other hardware interfaces
 echo "Configure setup to make it interact with attached hardware. enable SPI for EPD displays"
 sleep 5
 sudo raspi-config
 
 sudo apt install -y python3
+# creating a default environment for all python installations
+python3 -m venv --system-site-packages ~/env
 
-# Create a default environment for all python installations
-python3 -m venv --system-site-packages "$REAL_HOME/env"
+# making a directory for startup programs
+mkdir ~/base-boot
 
-# Make a directory for startup programs
-mkdir -p "$REAL_HOME/base-boot"
+# adding ip updation email to 
+cp -r ~/rpi-02w-setup/base-boot ~/base-boot/
 
-# Copy startup files
-cp -r "$REAL_HOME/rpi-02w-setup/base-boot" "$REAL_HOME/base-boot/"
-
-# Crontab setup
+# setting cronjobs to use the mail updation script to run at startup
+# add commands to run other files to the root file at startup or periodically
 echo "__________________Crontab content, you have 10 seconds to copy the content below this line ______________________"
-cat "$REAL_HOME/rpi-02w-setup/root"
+cat ~/rpi-02w-setup/root
 sleep 10
 echo "__________________paste this into the window that appears next______________________"
 sudo crontab -e
 sleep 5
 
 curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale set --operator="$REAL_USER"
+sudo tailscale set --operator=$USER
 
 read -p "Enter your Tailscale auth key: " AUTH_KEY
 tailscale up -ssh --authkey "$AUTH_KEY"
 
-cd "$REAL_HOME"
-sudo apt install -y zsh
+cd
+sudo apt install zsh
 RUNZSH=no CHSH=no sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
-# Zsh plugins
-mkdir -p "$REAL_HOME/.zsh/plugins"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$REAL_HOME/.zsh/plugins/zsh-syntax-highlighting"
-git clone https://github.com/zsh-users/zsh-autosuggestions.git "$REAL_HOME/.zsh/plugins/zsh-autosuggestions"
+# Create a directory for Zsh custom plugins
+mkdir -p ~/.zsh/plugins
 
-# Append plugin config and aliases to .zshrc
-cat >> "$REAL_HOME/.zshrc" <<EOF
+# Clone both plugins into the same location
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
 
-# Load zsh plugins
-source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-alias rcedit='nano ~/.zshrc'
-alias refsh='source ~/.zshrc'
-source ~/env/bin/activate
-EOF
+# Add sourcing lines to .zshrc if not already present
+{
+  echo ""
+  echo "# Load zsh plugins"
+  echo "source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  echo "source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+} >> ~/.zshrc
 
-# Set default shell to Zsh for the real user
-chsh -s "$(which zsh)" "$REAL_USER"
+#copy bashrc file to ensure the environment is activated on every login and some other customizations
+echo "alias rcedit='nano ~/.zshrc'" >> ~/.zshrc
+echo "alias refsh='source ~/.zshrc'" >> ~/.zshrc
+echo "source ~/env/bin/activate" >> ~/.zshrc
+
+# Set Zsh as default shell
+chsh -s $(which zsh)
 
 sudo apt -y autoremove
-echo "✅ Reboot the system to get the new changes by running: sudo reboot now"
+echo "Reboot the system to get the new changes by running 'sudo reboot now'"
