@@ -49,6 +49,9 @@ mkdir -p "$REAL_HOME/.zsh/plugins"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$REAL_HOME/.zsh/plugins/zsh-syntax-highlighting"
 git clone https://github.com/zsh-users/zsh-autosuggestions.git "$REAL_HOME/.zsh/plugins/zsh-autosuggestions"
 
+# Set default shell
+sudo chsh -s "$(which zsh)" "$REAL_USER"
+
 # .zshrc additions
 cat >> "$REAL_HOME/.zshrc" <<EOF
 
@@ -59,9 +62,6 @@ alias rcedit='nano ~/.zshrc'
 alias refsh='source ~/.zshrc'
 source ~/env/bin/activate
 EOF
-
-# Set default shell
-sudo chsh -s "$(which zsh)" "$REAL_USER"
 
 sudo apt -y autoremove
 
