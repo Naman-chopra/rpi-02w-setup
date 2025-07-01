@@ -15,6 +15,6 @@ python3 setup.py install
 
 sudo apt -y autoremove
 
-cd ~/rpiz2wFirstBoot
+cd ~/rpi-02w-setup
 
 pip install -r requirements.txt

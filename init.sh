@@ -14,7 +14,7 @@ python3 -m venv --system-site-packages ~/env
 mkdir ~/base-boot
 
 # adding ip updation email to 
-cp -r ~/rpiz2wFirstBoot/base-boot ~/base-boot/
+cp -r ~/rpi-02w-setup/base-boot ~/base-boot/
 
 #copy bashrc file to ensure the environment is activated on every login and some other customizations
 echo "alias rcedit='nano ~/.zshrc'" >> ~/.zshrc
