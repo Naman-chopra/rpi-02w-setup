@@ -18,7 +18,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-au
   echo "source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 } >> ~/.zshrc
 
-sudo reboot now
 sudo apt update && sudo apt -y upgrade
 # configure the vnc server, vnc resolution, update the pi and other hardware interfaces
 echo "Configure setup to make it interact with attached hardware. enable SPI for EPD displays"
@@ -56,3 +55,4 @@ read -p "Enter your Tailscale auth key: " AUTH_KEY
 tailscale up -ssh --authkey "$AUTH_KEY"
 
 sudo apt -y autoremove
+echo "Reboot the system to get the new changes by running 'sudo reboot now'"
