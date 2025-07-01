@@ -1,63 +1,76 @@
 #!/bin/bash
-set -e  # Exit immediately if a command fails
+set -e  # Exit on any failure
 
-sudo apt update && sudo apt -y upgrade
-# configure the vnc server, vnc resolution, update the pi and other hardware interfaces
-echo "Configure setup to make it interact with attached hardware. enable SPI for EPD displays"
+# Determine if running as root
+if [[ "$EUID" -ne 0 ]]; then
+  echo "⚠️ Script not run as root. Elevating with sudo..."
+  exec sudo "$0" "$@"
+fi
+
+# Now running as root
+# Determine the real user (who invoked sudo, or who is logged in)
+if [ -n "$SUDO_USER" ]; then
+  REAL_USER="$SUDO_USER"
+else
+  # If not run via sudo, try to detect the logged-in user
+  REAL_USER=$(logname)
+fi
+
+REAL_HOME=$(eval echo "~$REAL_USER")
+
+# System updates
+apt update && apt -y upgrade
+
+# Hardware configuration
+echo "Configure setup to make it interact with attached hardware. Enable SPI for EPD displays"
 sleep 5
-sudo raspi-config
+raspi-config
 
-sudo apt install -y python3
-# creating a default environment for all python installations
-python3 -m venv --system-site-packages ~/env
+# Python setup
+apt install -y python3
+sudo -u "$REAL_USER" python3 -m venv --system-site-packages "$REAL_HOME/env"
 
-# making a directory for startup programs
-mkdir ~/base-boot
+# Startup directories
+sudo -u "$REAL_USER" mkdir -p "$REAL_HOME/base-boot"
+sudo -u "$REAL_USER" cp -r "$REAL_HOME/rpi-02w-setup/base-boot" "$REAL_HOME/base-boot/"
 
-# adding ip updation email to 
-cp -r ~/rpi-02w-setup/base-boot ~/base-boot/
-
-# setting cronjobs to use the mail updation script to run at startup
-# add commands to run other files to the root file at startup or periodically
-echo "__________________Crontab content, you have 10 seconds to copy the content below this line ______________________"
-cat ~/rpi-02w-setup/root
+# Cron setup
+echo "__________________Crontab content, you have 10 seconds to copy the content below this line______________________"
+cat "$REAL_HOME/rpi-02w-setup/root"
 sleep 10
-echo "__________________paste this into the window that appears next______________________"
-sudo crontab -e
+echo "__________________Paste this into the window that appears next______________________"
+crontab -e
 sleep 5
 
+# Tailscale setup
 curl -fsSL https://tailscale.com/install.sh | sh
-sudo tailscale set --operator=$USER
-
+tailscale set --operator="$REAL_USER"
 read -p "Enter your Tailscale auth key: " AUTH_KEY
 tailscale up -ssh --authkey "$AUTH_KEY"
 
-cd
-sudo apt install zsh
-RUNZSH=no CHSH=no sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+# Zsh + Oh My Zsh
+apt install -y zsh
+sudo -u "$REAL_USER" sh -c 'RUNZSH=no CHSH=no wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh'
 
-# Create a directory for Zsh custom plugins
-mkdir -p ~/.zsh/plugins
+# Zsh plugins
+sudo -u "$REAL_USER" mkdir -p "$REAL_HOME/.zsh/plugins"
+sudo -u "$REAL_USER" git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$REAL_HOME/.zsh/plugins/zsh-syntax-highlighting"
+sudo -u "$REAL_USER" git clone https://github.com/zsh-users/zsh-autosuggestions.git "$REAL_HOME/.zsh/plugins/zsh-autosuggestions"
 
-# Clone both plugins into the same location
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
+# Zsh config
+sudo -u "$REAL_USER" bash -c "cat >> '$REAL_HOME/.zshrc'" <<'EOF'
 
-# Add sourcing lines to .zshrc if not already present
-{
-  echo ""
-  echo "# Load zsh plugins"
-  echo "source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-  echo "source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-} >> ~/.zshrc
+# Load zsh plugins
+source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+alias rcedit='nano ~/.zshrc'
+alias refsh='source ~/.zshrc'
+source ~/env/bin/activate
+EOF
 
-#copy bashrc file to ensure the environment is activated on every login and some other customizations
-echo "alias rcedit='nano ~/.zshrc'" >> ~/.zshrc
-echo "alias refsh='source ~/.zshrc'" >> ~/.zshrc
-echo "source ~/env/bin/activate" >> ~/.zshrc
+# Set default shell to zsh
+chsh -s "$(which zsh)" "$REAL_USER"
 
-# Set Zsh as default shell
-chsh -s $(which zsh)
+apt -y autoremove
 
-sudo apt -y autoremove
-echo "Reboot the system to get the new changes by running 'sudo reboot now'"
+echo "✅ All done! Reboot the system to apply changes with: sudo reboot now"
