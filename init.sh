@@ -1,22 +1,4 @@
 #!/bin/bash
-cd
-sudo apt install zsh
-RUNZSH=no sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-
-# Create a directory for Zsh custom plugins
-mkdir -p ~/.zsh/plugins
-
-# Clone both plugins into the same location
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
-
-# Add sourcing lines to .zshrc if not already present
-{
-  echo ""
-  echo "# Load zsh plugins"
-  echo "source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-  echo "source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-} >> ~/.zshrc
 
 sudo apt update && sudo apt -y upgrade
 # configure the vnc server, vnc resolution, update the pi and other hardware interfaces
@@ -54,5 +36,23 @@ sudo tailscale set --operator=$USER
 read -p "Enter your Tailscale auth key: " AUTH_KEY
 tailscale up -ssh --authkey "$AUTH_KEY"
 
+cd
+sudo apt install zsh
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
+# Create a directory for Zsh custom plugins
+mkdir -p ~/.zsh/plugins
+
+# Clone both plugins into the same location
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.zsh/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-autosuggestions
+
+# Add sourcing lines to .zshrc if not already present
+{
+  echo ""
+  echo "# Load zsh plugins"
+  echo "source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  echo "source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+} >> ~/.zshrc
 sudo apt -y autoremove
 echo "Reboot the system to get the new changes by running 'sudo reboot now'"
