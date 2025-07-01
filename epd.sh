@@ -18,4 +18,6 @@ cd ~/rpi-02w-setup
 
 pip install -r requirements.txt
 
+
+echo "LOOK AT YOUR DISPLAY"
 python3 base-boot/scripts/epd/helloworld.py
