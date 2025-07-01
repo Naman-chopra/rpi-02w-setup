@@ -54,3 +54,5 @@ sudo tailscale set --operator=$USER
 
 read -p "Enter your Tailscale auth key: " AUTH_KEY
 tailscale up -ssh --authkey "$AUTH_KEY"
+
+sudo apt -y autoremove

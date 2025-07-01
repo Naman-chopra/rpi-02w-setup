@@ -13,6 +13,8 @@ git clone https://github.com/waveshare/Touch_e-Paper_HAT
 cd Touch_e-Paper_HAT/python/
 python3 setup.py install
 
+sudo apt -y autoremove
+
 cd ~/rpiz2wFirstBoot
 
 pip install -r requirements.txt
