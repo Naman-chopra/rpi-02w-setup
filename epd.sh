@@ -6,7 +6,7 @@ unzip master.zip
 cd lg-master
 make
 sudo make install
-sudo apt install gpiod libgpiod-dev python3-pip
+sudo apt -y install gpiod libgpiod-dev python3-pip
 
 cd
 git clone https://github.com/waveshare/Touch_e-Paper_HAT

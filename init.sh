@@ -19,13 +19,13 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-au
 } >> ~/.zshrc
 
 sudo reboot now
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt -y upgrade
 # configure the vnc server, vnc resolution, update the pi and other hardware interfaces
 echo "Configure setup to make it interact with attached hardware. enable SPI for EPD displays"
 sleep 5
 sudo raspi-config
 
-sudo apt install python3
+sudo apt install -y python3
 # creating a default environment for all python installations
 python3 -m venv --system-site-packages ~/env
 
