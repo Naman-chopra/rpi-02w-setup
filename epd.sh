@@ -1,3 +1,4 @@
+#!/bin/bash
 source ~/env/bin/activate
 #installing all the libraries and drivers needed for the waveshare touch display
 cd

@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit immediately if a command fails
 
 sudo apt update && sudo apt -y upgrade
 # configure the vnc server, vnc resolution, update the pi and other hardware interfaces
@@ -15,11 +16,6 @@ mkdir ~/base-boot
 
 # adding ip updation email to 
 cp -r ~/rpi-02w-setup/base-boot ~/base-boot/
-
-#copy bashrc file to ensure the environment is activated on every login and some other customizations
-echo "alias rcedit='nano ~/.zshrc'" >> ~/.zshrc
-echo "alias refsh='source ~/.zshrc'" >> ~/.zshrc
-echo "source ~/env/bin/activate" >> ~/.zshrc
 
 # setting cronjobs to use the mail updation script to run at startup
 # add commands to run other files to the root file at startup or periodically
@@ -38,7 +34,7 @@ tailscale up -ssh --authkey "$AUTH_KEY"
 
 cd
 sudo apt install zsh
-sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+RUNZSH=no CHSH=no sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 # Create a directory for Zsh custom plugins
 mkdir -p ~/.zsh/plugins
@@ -54,5 +50,14 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/plugins/zsh-au
   echo "source ~/.zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   echo "source ~/.zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
 } >> ~/.zshrc
+
+#copy bashrc file to ensure the environment is activated on every login and some other customizations
+echo "alias rcedit='nano ~/.zshrc'" >> ~/.zshrc
+echo "alias refsh='source ~/.zshrc'" >> ~/.zshrc
+echo "source ~/env/bin/activate" >> ~/.zshrc
+
+# Set Zsh as default shell
+chsh -s $(which zsh)
+
 sudo apt -y autoremove
 echo "Reboot the system to get the new changes by running 'sudo reboot now'"
