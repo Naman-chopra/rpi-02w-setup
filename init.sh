@@ -23,6 +23,7 @@ sudo -u "$REAL_USER" python3 -m venv --system-site-packages "$REAL_HOME/env"
 
 # Setup directories and copy files
 sudo -u "$REAL_USER" mkdir -p "$REAL_HOME/base-boot"
+sudo -u "$REAL_USER" mkdir -p "$REAL_HOME/logs"
 sudo cp -r "$REAL_HOME/rpi-02w-setup/base-boot/." "$REAL_HOME/base-boot/"
 
 # Crontab setup
