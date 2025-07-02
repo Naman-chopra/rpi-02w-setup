@@ -29,4 +29,5 @@ pip install -r requirements.txt
 
 echo "LOOK AT YOUR DISPLAY"
 cd "$REAL_HOME"
+sudo rm -rf master.zip
 python3 base-boot/scripts/epd/helloworld.py
