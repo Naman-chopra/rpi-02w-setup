@@ -50,7 +50,7 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$REAL_HOME/.
 git clone https://github.com/zsh-users/zsh-autosuggestions.git "$REAL_HOME/.zsh/plugins/zsh-autosuggestions"
 
 # Set default shell
-sudo chsh -s /usr/bin/zsh
+chsh -s /usr/bin/zsh "$REAL_USER"
 
 # .zshrc additions
 cat >> "$REAL_HOME/.zshrc" <<EOF
