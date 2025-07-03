@@ -20,6 +20,7 @@ sudo apt -y install gpiod libgpiod-dev python3-pip
 # Clone Waveshare Touch display repo and install
 cd "$REAL_HOME"
 git clone "https://github.com/waveshare/Touch_e-Paper_HAT"
+sudo chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/Touch_e-Paper_HAT"
 pip install Touch_e-Paper_HAT/python/
 
 sudo apt -y autoremove
